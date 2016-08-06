@@ -14,6 +14,8 @@
 		FB625D8D1D53E309003682B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB625D8B1D53E309003682B7 /* LaunchScreen.storyboard */; };
 		FB625D981D53E309003682B7 /* PizzaThesisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB625D971D53E309003682B7 /* PizzaThesisTests.swift */; };
 		FB625DA31D53E309003682B7 /* PizzaThesisUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB625DA21D53E309003682B7 /* PizzaThesisUITests.swift */; };
+		FB625DB11D53FAF4003682B7 /* Topping.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB625DB01D53FAF4003682B7 /* Topping.swift */; };
+		FB625DB51D53FBE8003682B7 /* ToppingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB625DB41D53FBE8003682B7 /* ToppingTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		FB625D9E1D53E309003682B7 /* PizzaThesisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PizzaThesisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB625DA21D53E309003682B7 /* PizzaThesisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaThesisUITests.swift; sourceTree = "<group>"; };
 		FB625DA41D53E309003682B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB625DB01D53FAF4003682B7 /* Topping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topping.swift; sourceTree = "<group>"; };
+		FB625DB41D53FBE8003682B7 /* ToppingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToppingTableViewCell.swift; path = ../ToppingTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +101,10 @@
 		FB625D811D53E309003682B7 /* PizzaThesis */ = {
 			isa = PBXGroup;
 			children = (
+				FB625DB41D53FBE8003682B7 /* ToppingTableViewCell.swift */,
 				FB625D821D53E309003682B7 /* AppDelegate.swift */,
 				FB625D841D53E309003682B7 /* ViewController.swift */,
+				FB625DB01D53FAF4003682B7 /* Topping.swift */,
 				FB625D861D53E309003682B7 /* Main.storyboard */,
 				FB625D891D53E309003682B7 /* Assets.xcassets */,
 				FB625D8B1D53E309003682B7 /* LaunchScreen.storyboard */,
@@ -256,6 +262,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB625DB11D53FAF4003682B7 /* Topping.swift in Sources */,
+				FB625DB51D53FBE8003682B7 /* ToppingTableViewCell.swift in Sources */,
 				FB625D851D53E309003682B7 /* ViewController.swift in Sources */,
 				FB625D831D53E309003682B7 /* AppDelegate.swift in Sources */,
 			);
