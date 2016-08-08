@@ -19,17 +19,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var veggiesTableView: UITableView!
     
     // The list for the table view
-    var meats = [Topping]()
-    var veggies = [Topping]()
+    var meatsOnWhole = [Topping]()
+    var veggiesOnWhole = [Topping]()
+    var meatsOnLeft = [Topping]()
+    var veggiesOnLeft = [Topping]()
     var toppings: Array<Array<Topping>> = []
+    // Index used to initialize the TableViews
     var index: Int = 0
     
     @IBAction func orderConfirmed(sender: AnyObject) {
-        for topping in meats {
+        for topping in meatsOnWhole {
             print("\(topping.name) : \(topping.amount.selectedSegmentIndex)")
         }
-        for topping in veggies {
+        for topping in veggiesOnWhole {
             print("\(topping.name) : \(topping.amount.selectedSegmentIndex)")
+            
         }
     }
 
@@ -49,10 +53,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // Checks if the label for 4 cases instead of nested loop to check every value
         switch cell.toppingLabel.text! {
-        case meats[(toppingTableView.indexPathForCell(cell)?.row)!].name:
-            meats[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
-        case veggies[(toppingTableView.indexPathForCell(cell)?.row)!].name:
-            veggies[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
+        case meatsOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].name:
+//            meatsOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
+            meatsOnWhole[0].amount.selectedSegmentIndex = segment.selectedSegmentIndex
+            print("meatsOnWhole")
+        case veggiesOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].name:
+            veggiesOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
+            print("veggiesOnWhole")
         default:
             print("No table view type")
             
@@ -68,13 +75,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    @IBAction func sideForToppings(sender: AnyObject) {
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        let cell = meatsTableView.dequeueReusableCellWithIdentifier("ToppingTableViewCellIdentifier", forIndexPath: indexPath) as! ToppingTableViewCell
+        let toppingWhole = meatsOnWhole[indexPath.row]
+        print("whole : \(toppingWhole.amount.selectedSegmentIndex)")
+        let topping = meatsOnLeft[indexPath.row]
+        print(topping.name)
+        print("left : \(topping.amount.selectedSegmentIndex)")
+        print("cell : \(cell.toppingAmount.selectedSegmentIndex)")
+        // cell.toppingLabel.text = topping.name
+        // cell.toppingImage.image = topping.image
+        // Links topping element to the topping cell element
+        // topping.amount = cell.toppingAmount
+        // cell.toppingAmount = topping.amount
+        cell.toppingAmount.selectedSegmentIndex = topping.amount.selectedSegmentIndex
+        print(cell.toppingAmount.selectedSegmentIndex)
+        print("cell size : \(cell.toppingAmount.numberOfSegments)")
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         loadMeatToppings()
         loadVeggiesTopping()
         // Initializes the last table to the first table
-        toppings = [veggies, meats]
+        toppings = [veggiesOnWhole, meatsOnWhole]
         // self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.meatsTableView.registerClass(ToppingTableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.veggiesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
@@ -96,25 +124,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func loadMeatToppings() {
         // let defaultAmount = UISegmentedControl()
         let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
-        //defaultAmount.selectedSegmentIndex = 0
+        defaultAmount.selectedSegmentIndex = 0
         
         let image1 = UIImage(named: "pepperoni")
         let topping1 = Topping(name: "Pepperoni", image: image1, amount: defaultAmount)!
         let image2 = UIImage(named: "ham")
         let topping2 = Topping(name: "Ham", image: image2, amount: defaultAmount)!
         
-        meats += [topping1, topping2]
+        meatsOnWhole += [topping1, topping2]
+        meatsOnLeft += [topping1, topping2]
     }
     
     func loadVeggiesTopping() {
         let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
+        defaultAmount.selectedSegmentIndex = 0
         
         let image1 = UIImage(named: "pepperoni")
         let topping1 = Topping(name: "Sauteed Onions", image: image1, amount: defaultAmount)!
         let image2 = UIImage(named: "ham")
         let topping2 = Topping(name: "Jalapenos", image: image2, amount: defaultAmount)!
         
-        veggies += [topping1, topping2]
+        veggiesOnWhole += [topping1, topping2]
+        veggiesOnLeft += [topping1, topping2]
     }
 
     // Methods for UITableViewDataSource
@@ -123,7 +154,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return meats.count
+        return meatsOnWhole.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -141,6 +172,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.toppingImage.image = topping.image
         // Links topping element to the topping cell element
         topping.amount = cell.toppingAmount
+        cell.toppingAmount.selectedSegmentIndex = topping.amount.selectedSegmentIndex
+        print("tableView name : \(cell.toppingLabel.text)")
+        print("tableView amount : \(cell.toppingAmount.selectedSegmentIndex)")
         
         // Initializes the next table with the next array when the first sarray is done
         if toppings[index].count - 1 == indexPath.row {

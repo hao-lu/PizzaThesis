@@ -139,6 +139,9 @@
                                     <segment title="Whole"/>
                                     <segment title="Right"/>
                                 </segments>
+                                <connections>
+                                    <action selector="sideForToppings:" destination="BYZ-38-t0r" eventType="valueChanged" id="GBI-ty-hdY"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
