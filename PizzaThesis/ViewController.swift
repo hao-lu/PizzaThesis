@@ -17,22 +17,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // TableView in ViewController
     @IBOutlet weak var meatsTableView: UITableView!
     @IBOutlet weak var veggiesTableView: UITableView!
-    
+
+    @IBOutlet weak var sideOfPizzaSegmentControl: UISegmentedControl!
     // The list for the table view
     var meatsOnWhole = [Topping]()
     var veggiesOnWhole = [Topping]()
     var meatsOnLeft = [Topping]()
     var veggiesOnLeft = [Topping]()
-    var toppings: Array<Array<Topping>> = []
     // Index used to initialize the TableViews
     var index: Int = 0
     
     @IBAction func orderConfirmed(sender: AnyObject) {
         for topping in meatsOnWhole {
-            print("\(topping.name) : \(topping.amount.selectedSegmentIndex)")
+            print("\(topping.name) : \(topping.amount)")
         }
         for topping in veggiesOnWhole {
-            print("\(topping.name) : \(topping.amount.selectedSegmentIndex)")
+            print("\(topping.name) : \(topping.amount)")
+            
+        }
+        for topping in meatsOnLeft {
+            print("\(topping.name) : \(topping.amount)")
+        }
+        for topping in veggiesOnLeft {
+            print("\(topping.name) : \(topping.amount)")
             
         }
     }
@@ -40,59 +47,77 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func toppingAmountChanged(segment: UISegmentedControl) {
         // Downcast twice (first downcast gave UITableViewContentCell
         let cell = segment.superview!.superview as! ToppingTableViewCell
-        
         // The index of the ToppingTableViewCell in the TableView
         // let indexPathInt = meatsTableView.indexPathForCell(cell)?.row
         
         // Get the TableView from the cell (reference)
         let toppingTableView = cell.superview?.superview as! UITableView
+        let toppingTableViewCellIndex = toppingTableView.indexPathForCell(cell)!.row
 
-        // TODO: need to catch the nil (ERROR: cause you're passing a veggie cell into the meatTableView)
-        print(cell.toppingLabel.text, terminator: " : ")
-        print(segment.titleForSegmentAtIndex(segment.selectedSegmentIndex))
-        
-        // Checks if the label for 4 cases instead of nested loop to check every value
-        switch cell.toppingLabel.text! {
-        case meatsOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].name:
-//            meatsOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
-            meatsOnWhole[0].amount.selectedSegmentIndex = segment.selectedSegmentIndex
-            print("meatsOnWhole")
-        case veggiesOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].name:
-            veggiesOnWhole[(toppingTableView.indexPathForCell(cell)?.row)!].amount.selectedSegmentIndex = segment.selectedSegmentIndex
-            print("veggiesOnWhole")
+    
+        let meatsToppingAmountArray: Array<Topping>
+        let veggiesToppingAmountArray: Array<Topping>
+        switch sideOfPizzaSegmentControl.selectedSegmentIndex {
+        case 0:
+            print("LEFT")
+            meatsToppingAmountArray = meatsOnLeft
+            veggiesToppingAmountArray = veggiesOnLeft
+        case 1:
+            print("WHOLE")
+            meatsToppingAmountArray = meatsOnWhole
+            veggiesToppingAmountArray = veggiesOnWhole
+        case 2:
+            print("RIGHT")
+            meatsToppingAmountArray = []
+            veggiesToppingAmountArray = []
         default:
-            print("No table view type")
+            print("No type")
+            meatsToppingAmountArray = []
+            veggiesToppingAmountArray = []
+        }
+
+        switch toppingTableView {
+        case meatsTableView:
+            print("MEATS")
+            meatsToppingAmountArray[toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+        case veggiesTableView:
+            print("VEGGIE")
+            veggiesToppingAmountArray[toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+        default:
             
+            print("No type")
         }
         
-        // Works but loop inefficient
-        /*for topping in toppings {
-            if topping.name == cell.toppingLabel.text {
-                topping.amount.selectedSegmentIndex = segment.selectedSegmentIndex
-            }
-        }*/
-    
+        // TODO: need to catch the nil (ERROR: cause you're passing a veggie cell into the meatTableView)
+        print("NAME AND AMOUNT: \(cell.toppingLabel.text)", terminator: " : ")
+        print(segment.titleForSegmentAtIndex(segment.selectedSegmentIndex))
         
     }
     
-    @IBAction func sideForToppings(sender: AnyObject) {
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        let cell = meatsTableView.dequeueReusableCellWithIdentifier("ToppingTableViewCellIdentifier", forIndexPath: indexPath) as! ToppingTableViewCell
-        let toppingWhole = meatsOnWhole[indexPath.row]
-        print("whole : \(toppingWhole.amount.selectedSegmentIndex)")
-        let topping = meatsOnLeft[indexPath.row]
-        print(topping.name)
-        print("left : \(topping.amount.selectedSegmentIndex)")
-        print("cell : \(cell.toppingAmount.selectedSegmentIndex)")
-        // cell.toppingLabel.text = topping.name
-        // cell.toppingImage.image = topping.image
-        // Links topping element to the topping cell element
-        // topping.amount = cell.toppingAmount
-        // cell.toppingAmount = topping.amount
-        cell.toppingAmount.selectedSegmentIndex = topping.amount.selectedSegmentIndex
-        print(cell.toppingAmount.selectedSegmentIndex)
-        print("cell size : \(cell.toppingAmount.numberOfSegments)")
-        
+    @IBAction func sideForToppings(segment: UISegmentedControl) {
+        switch segment.selectedSegmentIndex {
+        case 0:
+            print("CHANGING TO LEFT")
+            changeToppingAmountBasedOnSide(meatsOnLeft, toppingTableView: meatsTableView)
+            changeToppingAmountBasedOnSide(veggiesOnLeft, toppingTableView: veggiesTableView)
+        case 1:
+            print("CHANGING TO WHOLE")
+            changeToppingAmountBasedOnSide(meatsOnWhole, toppingTableView: meatsTableView)
+            changeToppingAmountBasedOnSide(veggiesOnWhole, toppingTableView: veggiesTableView)
+        case 2:
+            print("CHANGING TO RIGHT")
+        default:
+            print("No type")
+        }
+    }
+    
+    func changeToppingAmountBasedOnSide(toppingAmountArray: Array<Topping>, toppingTableView: UITableView) {
+        for index in 0..<toppingAmountArray.count {
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+            let cell = toppingTableView.cellForRowAtIndexPath(indexPath) as! ToppingTableViewCell
+            let topping = toppingAmountArray[indexPath.row]
+            cell.toppingAmount.selectedSegmentIndex = topping.amount
+        }
     }
     
     
@@ -101,8 +126,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
         loadMeatToppings()
         loadVeggiesTopping()
-        // Initializes the last table to the first table
-        toppings = [veggiesOnWhole, meatsOnWhole]
         // self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.meatsTableView.registerClass(ToppingTableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.veggiesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
@@ -112,7 +135,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         meatsTableView.dataSource = self
         veggiesTableView.delegate = self
         veggiesTableView.dataSource = self
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -123,29 +145,37 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // Initialize array
     func loadMeatToppings() {
         // let defaultAmount = UISegmentedControl()
-        let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
-        defaultAmount.selectedSegmentIndex = 0
+        // let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
+        // defaultAmount.selectedSegmentIndex = 0
+        let defaultAmount: Int = 0
         
         let image1 = UIImage(named: "pepperoni")
         let topping1 = Topping(name: "Pepperoni", image: image1, amount: defaultAmount)!
         let image2 = UIImage(named: "ham")
         let topping2 = Topping(name: "Ham", image: image2, amount: defaultAmount)!
         
+        let topping3 = Topping(name: "Pepperoni (NEW)", image: image1, amount: defaultAmount)!
+        let topping4 = Topping(name: "Ham (NEW)", image: image2, amount: defaultAmount)!
+        
         meatsOnWhole += [topping1, topping2]
-        meatsOnLeft += [topping1, topping2]
+        meatsOnLeft += [topping3, topping4]
     }
     
     func loadVeggiesTopping() {
-        let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
-        defaultAmount.selectedSegmentIndex = 0
+        // let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
+        // defaultAmount.selectedSegmentIndex = 0
+        let defaultAmount = 0
         
-        let image1 = UIImage(named: "pepperoni")
+        let image1 = UIImage(named: "sauteed_onions")
         let topping1 = Topping(name: "Sauteed Onions", image: image1, amount: defaultAmount)!
-        let image2 = UIImage(named: "ham")
+        let image2 = UIImage(named: "jalapenos")
         let topping2 = Topping(name: "Jalapenos", image: image2, amount: defaultAmount)!
         
+        let topping3 = Topping(name: "Sauteed Onions (NEW)", image: image1, amount: defaultAmount)!
+        let topping4 = Topping(name: "Jalapenos (NEW)", image: image2, amount: defaultAmount)!
+        
         veggiesOnWhole += [topping1, topping2]
-        veggiesOnLeft += [topping1, topping2]
+        veggiesOnLeft += [topping3, topping4]
     }
 
     // Methods for UITableViewDataSource
@@ -158,29 +188,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("ToppingTableViewCell", forIndexPath: indexPath) as UITableViewCell
         // Use different name for the identifier. (Think it uses the .swift from the dequeue not the identifer)
         let cell = tableView.dequeueReusableCellWithIdentifier("ToppingTableViewCellIdentifier", forIndexPath: indexPath) as! ToppingTableViewCell
         
-//        cell.textLabel?.text = self.toppings[indexPath.row].name
-//        cell.imageView?.image = self.toppings[indexPath.row].image
-        
-        
-        // Fetches the appropriate meal for the data source layout (initializes the cells)
-        let topping = toppings[index][indexPath.row]
-        cell.toppingLabel.text = topping.name
-        cell.toppingImage.image = topping.image
-        // Links topping element to the topping cell element
-        topping.amount = cell.toppingAmount
-        cell.toppingAmount.selectedSegmentIndex = topping.amount.selectedSegmentIndex
-        print("tableView name : \(cell.toppingLabel.text)")
-        print("tableView amount : \(cell.toppingAmount.selectedSegmentIndex)")
-        
-        // Initializes the next table with the next array when the first sarray is done
-        if toppings[index].count - 1 == indexPath.row {
-            index += 1
+        // Rename toppingTableView variable for clarity
+        let toppingTableView: Array<Topping>
+        switch tableView {
+        case meatsTableView:
+            toppingTableView = meatsOnWhole
+        case veggiesTableView:
+            toppingTableView = veggiesOnWhole
+        default:
+            toppingTableView = []
+            print("No type")
         }
         
+        let topping = toppingTableView[indexPath.row]
+        cell.toppingLabel.text = topping.name
+        cell.toppingImage.image = topping.image
+        cell.toppingAmount.selectedSegmentIndex = topping.amount
+
         return cell
     }
     

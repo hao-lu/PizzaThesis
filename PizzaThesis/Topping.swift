@@ -12,10 +12,10 @@ class Topping {
     // Mark: Properties
     var name: String
     var image: UIImage?
-    var amount: UISegmentedControl
+    var amount: Int
     
     // MARK: Initialization
-    init?(name: String, image: UIImage?, amount: UISegmentedControl) {
+    init?(name: String, image: UIImage?, amount: Int) {
         // Initialize stored properties.
         self.name = name
         self.image = image

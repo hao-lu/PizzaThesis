@@ -151,6 +151,7 @@
                         <outlet property="meatsLabel" destination="6FF-Z7-y7g" id="h4r-wi-qkt"/>
                         <outlet property="meatsTableView" destination="QA6-TH-sTA" id="5jN-4O-tmy"/>
                         <outlet property="pizzaPreview" destination="snl-qv-31f" id="Zc0-YE-Jmc"/>
+                        <outlet property="sideOfPizzaSegmentControl" destination="cJo-H2-HW7" id="guz-78-IA6"/>
                         <outlet property="veggiesLabel" destination="W5L-r1-VbT" id="Byi-d3-m7u"/>
                         <outlet property="veggiesTableView" destination="geY-ur-xmo" id="oRe-Kg-C6H"/>
                     </connections>
