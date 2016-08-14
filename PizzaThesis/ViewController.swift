@@ -21,47 +21,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var cheesesTableView: UITableView!
 
     @IBOutlet weak var sideOfPizzaSegmentControl: UISegmentedControl!
-    // The list for the table view
-    var meatsOnWhole = [Topping]()
-    var veggiesOnWhole = [Topping]()
-    var saucesOnWhole = [Topping]()
-    var cheesesOnWhole = [Topping]()
     
-    var meatsOnLeft = [Topping]()
-    var veggiesOnLeft = [Topping]()
-    
-    var meatsOnRight = [Topping]()
-    var veggiesOnRight = [Topping]()
+    // Constants
+    let LEFT = 0
+    let WHOLE = 1
+    let RIGHT = 2
     
     // TODO: make an array of the image names and use string methods to make it to label names
     var meatsToppingImageName = ["pepperoni", "ham"]
     var veggiesToppingImageName = ["sauteed_onions", "jalapenos"]
     var saucesToppingImageName = ["red_sauce", "spicy_red_sauce"]
-    var cheesesToppingImageName = []
-//    var cheesesToppingImageName = ["sauteed_onions", "jalapenos"]
+    var cheesesToppingImageName = ["mozzarella", "gorgonzola"]
+    
+    // Initialize array of Topping Arrays
+    var meatToppingsOnPizza = [[Topping](), [Topping](), [Topping]()]
+    var veggieToppingsOnPizza = [[Topping](), [Topping](), [Topping]()]
+    var sauceToppingsOnPizza = [[Topping](), [Topping](), [Topping]()]
+    var cheeseToppingsOnPizza = [[Topping](), [Topping](), [Topping]()]
 
     
     @IBAction func orderConfirmed(sender: AnyObject) {
-        for topping in meatsOnWhole {
-            print("\(topping.name) : \(topping.amount)")
-        }
-        for topping in veggiesOnWhole {
-            print("\(topping.name) : \(topping.amount)")
-            
-        }
-        for topping in meatsOnLeft {
-            print("\(topping.name) : \(topping.amount)")
-        }
-        for topping in veggiesOnLeft {
-            print("\(topping.name) : \(topping.amount)")
-            
-        }
-        for topping in meatsOnRight {
-            print("\(topping.name) : \(topping.amount)")
-        }
-        for topping in veggiesOnRight {
-            print("\(topping.name) : \(topping.amount)")
-            
+        for meatTopping in meatToppingsOnPizza {
+            for topping in meatTopping {
+                print("\(topping.name) : \(topping.amount)")
+            }
         }
     }
 
@@ -75,35 +58,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let toppingTableView = cell.superview?.superview as! UITableView
         let toppingTableViewCellIndex = toppingTableView.indexPathForCell(cell)!.row
 
-    
-        let meatsToppingAmountArray: Array<Topping>
-        let veggiesToppingAmountArray: Array<Topping>
-        switch sideOfPizzaSegmentControl.selectedSegmentIndex {
-        case 0:
-            print("LEFT")
-            meatsToppingAmountArray = meatsOnLeft
-            veggiesToppingAmountArray = veggiesOnLeft
-        case 1:
-            print("WHOLE")
-            meatsToppingAmountArray = meatsOnWhole
-            veggiesToppingAmountArray = veggiesOnWhole
-        case 2:
-            print("RIGHT")
-            meatsToppingAmountArray = meatsOnRight
-            veggiesToppingAmountArray = veggiesOnRight
-        default:
-            print("No type")
-            meatsToppingAmountArray = []
-            veggiesToppingAmountArray = []
-        }
-
         switch toppingTableView {
         case meatsTableView:
             print("MEATS")
-            meatsToppingAmountArray[toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            meatToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         case veggiesTableView:
             print("VEGGIE")
-            veggiesToppingAmountArray[toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            veggieToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         default:
             
             print("No type")
@@ -116,22 +77,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @IBAction func sideForToppings(segment: UISegmentedControl) {
-        switch segment.selectedSegmentIndex {
-        case 0:
-            print("CHANGING TO LEFT")
-            changeToppingAmountBasedOnSide(meatsOnLeft, toppingTableView: meatsTableView)
-            changeToppingAmountBasedOnSide(veggiesOnLeft, toppingTableView: veggiesTableView)
-        case 1:
-            print("CHANGING TO WHOLE")
-            changeToppingAmountBasedOnSide(meatsOnWhole, toppingTableView: meatsTableView)
-            changeToppingAmountBasedOnSide(veggiesOnWhole, toppingTableView: veggiesTableView)
-        case 2:
-            print("CHANGING TO RIGHT")
-            changeToppingAmountBasedOnSide(meatsOnRight, toppingTableView: meatsTableView)
-            changeToppingAmountBasedOnSide(veggiesOnRight, toppingTableView: veggiesTableView)
-        default:
-            print("No type")
-        }
+        changeToppingAmountBasedOnSide(meatToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: meatsTableView)
+        changeToppingAmountBasedOnSide(veggieToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: veggiesTableView)
     }
     
     func changeToppingAmountBasedOnSide(toppingAmountArray: Array<Topping>, toppingTableView: UITableView) {
@@ -148,10 +95,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         loadMeatToppingsIntoArrays()
-        // loadMeatToppings()
-        loadVeggiesTopping()
-        loadSaucesTopping()
-        loadCheesesTopping()
+        loadVeggieToppingsIntoArrays()
+        loadSauceToppingsIntoArrays()
+        loadCheeseToppingsIntoArrays()
+
         // self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.meatsTableView.registerClass(ToppingTableViewCell.self, forCellReuseIdentifier: "ToppingTableViewCell")
         self.veggiesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
@@ -169,6 +116,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         cheesesTableView.delegate = self
         cheesesTableView.dataSource = self
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -177,95 +125,85 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func loadMeatToppingsIntoArrays() {
-
         let defaultAmount = 0
-        for toppingImageName in meatsToppingImageName {
+        for imageName in meatsToppingImageName {
             // let arrayToppingImageName = toppingImageName.characters.split("_")
-            let imageNameSplit = toppingImageName.componentsSeparatedByString("_")
+            let imageNameSplit = imageName.componentsSeparatedByString("_")
             
             var toppingName = ""
             for imageName in imageNameSplit {
                 toppingName += imageName.capitalizedString
             }
-
-            let toppingOnWholePizza = Topping(name: toppingName, image: UIImage(named: toppingImageName), amount: defaultAmount)!
+            let toppingOnWholePizza = Topping(name: toppingName, image: UIImage(named: imageName), amount: defaultAmount)!
             let toppingOnLeftPizza = Topping(name: toppingName + " LEFT", image: nil, amount: defaultAmount)!
             let toppingOnRightPizza = Topping(name: toppingName + " RIGHT", image: nil, amount: defaultAmount)!
-
-            meatsOnWhole += [toppingOnWholePizza]
-            meatsOnLeft += [toppingOnLeftPizza]
-            meatsOnRight += [toppingOnRightPizza]
             
+            meatToppingsOnPizza[LEFT] += [toppingOnLeftPizza]
+            meatToppingsOnPizza[WHOLE] += [toppingOnWholePizza]
+            meatToppingsOnPizza[RIGHT] += [toppingOnRightPizza]
+        }
+    }
+    
+    func loadVeggieToppingsIntoArrays() {
+        let defaultAmount = 0
+        for imageName in veggiesToppingImageName {
+            // let arrayToppingImageName = toppingImageName.characters.split("_")
+            let imageNameSplit = imageName.componentsSeparatedByString("_")
+            
+            var toppingName = ""
+            for imageName in imageNameSplit {
+                toppingName += imageName.capitalizedString
+            }
+            let toppingOnWholePizza = Topping(name: toppingName, image: UIImage(named: imageName), amount: defaultAmount)!
+            let toppingOnLeftPizza = Topping(name: toppingName + " LEFT", image: nil, amount: defaultAmount)!
+            let toppingOnRightPizza = Topping(name: toppingName + " RIGHT", image: nil, amount: defaultAmount)!
+            
+            veggieToppingsOnPizza[LEFT] += [toppingOnLeftPizza]
+            veggieToppingsOnPizza[WHOLE] += [toppingOnWholePizza]
+            veggieToppingsOnPizza[RIGHT] += [toppingOnRightPizza]
+        }
+
+    }
+    
+    func loadSauceToppingsIntoArrays() {
+        let defaultAmount = 0
+        for imageName in saucesToppingImageName {
+            // let arrayToppingImageName = toppingImageName.characters.split("_")
+            let imageNameSplit = imageName.componentsSeparatedByString("_")
+            
+            var toppingName = ""
+            for imageName in imageNameSplit {
+                toppingName += imageName.capitalizedString
+            }
+            let toppingOnWholePizza = Topping(name: toppingName, image: UIImage(named: imageName), amount: defaultAmount)!
+            let toppingOnLeftPizza = Topping(name: toppingName + " LEFT", image: nil, amount: defaultAmount)!
+            let toppingOnRightPizza = Topping(name: toppingName + " RIGHT", image: nil, amount: defaultAmount)!
+            
+            sauceToppingsOnPizza[LEFT] += [toppingOnLeftPizza]
+            sauceToppingsOnPizza[WHOLE] += [toppingOnWholePizza]
+            sauceToppingsOnPizza[RIGHT] += [toppingOnRightPizza]
         }
         
     }
     
-    
-    
-    // Initialize array
-    func loadMeatToppings() {
-        // let defaultAmount = UISegmentedControl()
-        // let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
-        // defaultAmount.selectedSegmentIndex = 0
-        let defaultAmount: Int = 0
-        
-        let topping1 = Topping(name: "Pepperoni", image: UIImage(named: "pepperoni"), amount: defaultAmount)!
-        let topping2 = Topping(name: "Ham", image: UIImage(named: "ham"), amount: defaultAmount)!
-        
-        let topping1Left = Topping(name: "Pepperoni (LEFT)", image: nil, amount: defaultAmount)!
-        let topping2Left = Topping(name: "Ham (LEFT)", image: nil, amount: defaultAmount)!
-        
-        let topping1Right = Topping(name: "Pepperoni (RIGHT)", image: nil, amount: defaultAmount)!
-        let topping2Right = Topping(name: "Ham (RIGHT)", image: nil, amount: defaultAmount)!
-    
-        meatsOnWhole += [topping1, topping2]
-        meatsOnLeft += [topping1Left, topping2Left]
-        meatsOnRight +=  [topping1Right, topping2Right]
-    }
-    
-    func loadVeggiesTopping() {
-        // let defaultAmount = UISegmentedControl(items: ["None", "Light", "Regular", "Extra"])
-        // defaultAmount.selectedSegmentIndex = 0
+    func loadCheeseToppingsIntoArrays() {
         let defaultAmount = 0
-        
-        let image1 = UIImage(named: "sauteed_onions")
-        let topping1 = Topping(name: "Sauteed Onions", image: image1, amount: defaultAmount)!
-        let image2 = UIImage(named: "jalapenos")
-        let topping2 = Topping(name: "Jalapenos", image: image2, amount: defaultAmount)!
-        
-        let topping3 = Topping(name: "Sauteed Onions (LEFT)", image: image1, amount: defaultAmount)!
-        let topping4 = Topping(name: "Jalapenos (LEFT)", image: image2, amount: defaultAmount)!
-        
-        let topping3a = Topping(name: "Sauteed Onions (RIGHT)", image: image1, amount: defaultAmount)!
-        let topping4a = Topping(name: "Jalapenos (RIGHT)", image: image2, amount: defaultAmount)!
-        
-        veggiesOnWhole += [topping1, topping2]
-        veggiesOnLeft += [topping3, topping4]
-        veggiesOnRight += [topping3a, topping4a]
-    }
-    
-    func loadSaucesTopping() {
-        let defaultAmount = 0
-        
-        let image1 = UIImage(named: "red_sauce")
-        let topping1 = Topping(name: "Red Sauce", image: image1, amount: defaultAmount)!
-        let image2 = UIImage(named: "spicy_red_sauce")
-        let topping2 = Topping(name: "Spicy Red Sauce", image: image2, amount: defaultAmount)!
-        
-        saucesOnWhole += [topping1, topping2]
-
-    }
-    
-    func loadCheesesTopping() {
-        let defaultAmount = 0
-        
-        let image1 = UIImage(named: "red_sauce")
-        let topping1 = Topping(name: "Mozzarella", image: image1, amount: defaultAmount)!
-        let image2 = UIImage(named: "spicy_red_sauce")
-        let topping2 = Topping(name: "Gorgonzola", image: image2, amount: defaultAmount)!
-        
-        cheesesOnWhole += [topping1, topping2]
-        
+        for imageName in cheesesToppingImageName {
+            // let arrayToppingImageName = toppingImageName.characters.split("_")
+            let imageNameSplit = imageName.componentsSeparatedByString("_")
+            
+            var toppingName = ""
+            for imageName in imageNameSplit {
+                toppingName += imageName.capitalizedString
+            }
+            let toppingOnWholePizza = Topping(name: toppingName, image: UIImage(named: imageName), amount: defaultAmount)!
+            let toppingOnLeftPizza = Topping(name: toppingName + " LEFT", image: nil, amount: defaultAmount)!
+            let toppingOnRightPizza = Topping(name: toppingName + " RIGHT", image: nil, amount: defaultAmount)!
+            
+            cheeseToppingsOnPizza[LEFT] += [toppingOnLeftPizza]
+            cheeseToppingsOnPizza[WHOLE] += [toppingOnWholePizza]
+            cheeseToppingsOnPizza[RIGHT] += [toppingOnRightPizza]
+        }
     }
 
     // Methods for UITableViewDataSource
@@ -274,7 +212,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return meatsOnWhole.count
+        // RETURN THE RIGHT COUNT IF 0 TABLE VIEW WILL NOT RUN
+        // return meatsOnWhole.count
+        // return the number of table views
+        // return meatToppingsOnPizza[WHOLE].count
+        switch tableView {
+        case meatsTableView:
+            return meatToppingsOnPizza[WHOLE].count
+        case veggiesTableView:
+            return veggieToppingsOnPizza[WHOLE].count
+        case saucesTableView:
+            return sauceToppingsOnPizza[WHOLE].count
+        case cheesesTableView:
+            return cheeseToppingsOnPizza[WHOLE].count
+        default:
+            print("EMPTY TABLE VIEW")
+            return 0
+        }
+
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -285,13 +240,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let toppingTableView: Array<Topping>
         switch tableView {
         case meatsTableView:
-            toppingTableView = meatsOnWhole
+            toppingTableView = meatToppingsOnPizza[WHOLE]
         case veggiesTableView:
-            toppingTableView = veggiesOnWhole
+            toppingTableView = veggieToppingsOnPizza[WHOLE]
         case saucesTableView:
-            toppingTableView = saucesOnWhole
+            toppingTableView = sauceToppingsOnPizza[WHOLE]
         case cheesesTableView:
-            toppingTableView = cheesesOnWhole
+            toppingTableView = cheeseToppingsOnPizza[WHOLE]
         default:
             toppingTableView = []
             print("No type")
