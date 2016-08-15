@@ -65,8 +65,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         case veggiesTableView:
             print("VEGGIE")
             veggieToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+        case saucesTableView:
+            print("VEGGIE")
+            sauceToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+        case cheesesTableView:
+            print("VEGGIE")
+            cheeseToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         default:
-            
             print("No type")
         }
         
@@ -79,6 +84,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func sideForToppings(segment: UISegmentedControl) {
         changeToppingAmountBasedOnSide(meatToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: meatsTableView)
         changeToppingAmountBasedOnSide(veggieToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: veggiesTableView)
+        changeToppingAmountBasedOnSide(sauceToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: saucesTableView)
+        changeToppingAmountBasedOnSide(cheeseToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: cheesesTableView)
     }
     
     func changeToppingAmountBasedOnSide(toppingAmountArray: Array<Topping>, toppingTableView: UITableView) {
