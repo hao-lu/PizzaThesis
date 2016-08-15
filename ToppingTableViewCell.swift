@@ -13,7 +13,10 @@ class ToppingTableViewCell: UITableViewCell {
     // MARK: Properties
     @IBOutlet weak var toppingLabel: UILabel!
     @IBOutlet weak var toppingImage: UIImageView!
-    @IBOutlet weak var toppingAmount: UISegmentedControl!
+    @IBOutlet weak var toppingAmountSegmentedControl: UISegmentedControl!
+    
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

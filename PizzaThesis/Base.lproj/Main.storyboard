@@ -27,52 +27,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="81" sectionHeaderHeight="28" sectionFooterHeight="28" id="QA6-TH-sTA">
-                                <rect key="frame" x="20" y="60" width="354" height="708"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ToppingTableViewCellIdentifier" rowHeight="80" id="Isy-y5-KcT" customClass="ToppingTableViewCell" customModule="PizzaThesis" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="354" height="80"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Isy-y5-KcT" id="nj5-jL-C4Q">
-                                            <rect key="frame" x="0.0" y="0.0" width="354" height="79.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="e1o-EY-TRK">
-                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eZl-K6-2xH">
-                                                    <rect key="frame" x="88" y="8" width="185" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="AB2-Pf-OTR">
-                                                    <rect key="frame" x="88" y="37" width="258" height="29"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <segments>
-                                                        <segment title="None"/>
-                                                        <segment title="Light"/>
-                                                        <segment title="Regular"/>
-                                                        <segment title="Extra"/>
-                                                    </segments>
-                                                    <connections>
-                                                        <action selector="toppingAmountChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="VNh-BA-KKY"/>
-                                                    </connections>
-                                                </segmentedControl>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="toppingAmount" destination="AB2-Pf-OTR" id="fxA-Ei-pkX"/>
-                                            <outlet property="toppingImage" destination="e1o-EY-TRK" id="Z6d-aO-mQp"/>
-                                            <outlet property="toppingLabel" destination="eZl-K6-2xH" id="b4g-Qb-9Tf"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="81" sectionHeaderHeight="28" sectionFooterHeight="28" id="geY-ur-xmo">
                                 <rect key="frame" x="651" y="60" width="354" height="708"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -106,29 +60,33 @@
                                                         <segment title="Extra"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="toppingAmountChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="wpd-7J-bKj"/>
+                                                        <action selector="toppingAmountSegmentedControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="LX7-KG-akn"/>
                                                     </connections>
                                                 </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="toppingAmount" destination="OLC-Nz-VvO" id="dw8-4J-uLM"/>
+                                            <outlet property="toppingAmountSegmentedControl" destination="OLC-Nz-VvO" id="LeA-Tv-ZSx"/>
                                             <outlet property="toppingImage" destination="jzZ-QO-0jJ" id="nbF-C0-oLL"/>
                                             <outlet property="toppingLabel" destination="Y8K-ug-HNd" id="B4T-nU-QQn"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="SXo-Wa-yIU"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="fMX-IQ-JSP"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4Wm-H4-BwK">
                                 <rect key="frame" x="494" y="735" width="37" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
-                                    <action selector="orderConfirmed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Man-eN-El2"/>
+                                    <action selector="orderConfirmedButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mGd-c2-Fzo"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PizzaPreview" id="snl-qv-31f">
-                                <rect key="frame" x="392" y="79" width="240" height="240"/>
+                                <rect key="frame" x="392" y="77" width="240" height="240"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="105" sectionHeaderHeight="28" sectionFooterHeight="28" id="KRj-cR-2b0">
@@ -164,18 +122,22 @@
                                                         <segment title="Extra"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="toppingAmountChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="kQp-Q7-GYT"/>
+                                                        <action selector="toppingAmountSegmentedControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="Mfw-95-WuT"/>
                                                     </connections>
                                                 </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="toppingAmount" destination="8NO-o8-UrS" id="Ul2-s9-OOi"/>
+                                            <outlet property="toppingAmountSegmentedControl" destination="8NO-o8-UrS" id="mWg-UC-XIn"/>
                                             <outlet property="toppingImage" destination="poq-lq-YN1" id="nTm-IU-hCn"/>
                                             <outlet property="toppingLabel" destination="YGu-jK-QMf" id="291-JL-J0U"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="KNK-gZ-lTn"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="XVn-QE-VBQ"/>
+                                </connections>
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="105" sectionHeaderHeight="28" sectionFooterHeight="28" id="1PK-sn-7QW">
                                 <rect key="frame" x="392" y="558" width="240" height="158"/>
@@ -210,21 +172,31 @@
                                                         <segment title="Extra"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="toppingAmountChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="Rdr-XX-bA1"/>
+                                                        <action selector="toppingAmountSegmentedControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="UKk-x1-cry"/>
                                                     </connections>
                                                 </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="toppingAmount" destination="ZzN-1d-ayB" id="0ZR-BG-enk"/>
+                                            <outlet property="toppingAmountSegmentedControl" destination="ZzN-1d-ayB" id="tC4-0F-b6W"/>
                                             <outlet property="toppingImage" destination="5AY-7X-erQ" id="qBT-6x-HHY"/>
                                             <outlet property="toppingLabel" destination="gdh-fb-SWS" id="2i8-vR-Aat"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="ERs-yV-9QX"/>
+                                </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sauces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DIJ-cP-jVd">
                                 <rect key="frame" x="484" y="325" width="56" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cheeses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gBk-y0-wsA">
+                                <rect key="frame" x="479" y="529" width="67" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -239,28 +211,69 @@
                                     <segment title="Right"/>
                                 </segments>
                                 <connections>
-                                    <action selector="sideForToppings:" destination="BYZ-38-t0r" eventType="valueChanged" id="GBI-ty-hdY"/>
+                                    <action selector="halfOfWholeSegmentedControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="xmK-x5-dp4"/>
                                 </connections>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cheeses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gBk-y0-wsA">
-                                <rect key="frame" x="479" y="529" width="67" height="21"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="81" sectionHeaderHeight="28" sectionFooterHeight="28" id="QA6-TH-sTA">
+                                <rect key="frame" x="20" y="60" width="354" height="708"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ToppingTableViewCellIdentifier" rowHeight="80" id="Isy-y5-KcT" customClass="ToppingTableViewCell" customModule="PizzaThesis" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="354" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Isy-y5-KcT" id="nj5-jL-C4Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="354" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="e1o-EY-TRK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eZl-K6-2xH">
+                                                    <rect key="frame" x="88" y="8" width="185" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="AB2-Pf-OTR">
+                                                    <rect key="frame" x="88" y="37" width="258" height="29"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <segments>
+                                                        <segment title="None"/>
+                                                        <segment title="Light"/>
+                                                        <segment title="Regular"/>
+                                                        <segment title="Extra"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="toppingAmountSegmentedControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="aZ5-x5-5mF"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="toppingAmountSegmentedControl" destination="AB2-Pf-OTR" id="azx-hE-qL2"/>
+                                            <outlet property="toppingImage" destination="e1o-EY-TRK" id="Z6d-aO-mQp"/>
+                                            <outlet property="toppingLabel" destination="eZl-K6-2xH" id="b4g-Qb-9Tf"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="ACP-hs-t0e"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="wSd-bj-Z9V"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="cheesesTableView" destination="1PK-sn-7QW" id="gpH-At-L66"/>
-                        <outlet property="meatsLabel" destination="6FF-Z7-y7g" id="h4r-wi-qkt"/>
+                        <outlet property="halfOrWholeSegmentedControl" destination="cJo-H2-HW7" id="9li-l3-7ak"/>
                         <outlet property="meatsTableView" destination="QA6-TH-sTA" id="5jN-4O-tmy"/>
                         <outlet property="pizzaPreview" destination="snl-qv-31f" id="Zc0-YE-Jmc"/>
                         <outlet property="saucesTableView" destination="KRj-cR-2b0" id="kcB-1b-ccT"/>
-                        <outlet property="sideOfPizzaSegmentControl" destination="cJo-H2-HW7" id="guz-78-IA6"/>
-                        <outlet property="veggiesLabel" destination="W5L-r1-VbT" id="Byi-d3-m7u"/>
                         <outlet property="veggiesTableView" destination="geY-ur-xmo" id="oRe-Kg-C6H"/>
                     </connections>
                 </viewController>

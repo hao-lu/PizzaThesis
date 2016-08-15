@@ -11,16 +11,13 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var pizzaPreview: UIImageView!
-    @IBOutlet weak var meatsLabel: UILabel!
-    @IBOutlet weak var veggiesLabel: UILabel!
     // MARK: Properties
     // TableView in ViewController
     @IBOutlet weak var meatsTableView: UITableView!
     @IBOutlet weak var veggiesTableView: UITableView!
     @IBOutlet weak var saucesTableView: UITableView!
     @IBOutlet weak var cheesesTableView: UITableView!
-
-    @IBOutlet weak var sideOfPizzaSegmentControl: UISegmentedControl!
+    @IBOutlet weak var halfOrWholeSegmentedControl: UISegmentedControl!
     
     // Constants
     let LEFT = 0
@@ -28,6 +25,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let RIGHT = 2
     
     // TODO: make an array of the image names and use string methods to make it to label names
+    // TODO: add toppingdatasource file
     var meatsToppingImageName = ["pepperoni", "ham"]
     var veggiesToppingImageName = ["sauteed_onions", "jalapenos"]
     var saucesToppingImageName = ["red_sauce", "spicy_red_sauce"]
@@ -40,15 +38,31 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var cheeseToppingsOnPizza = [[Topping](), [Topping](), [Topping]()]
 
     
-    @IBAction func orderConfirmed(sender: AnyObject) {
+    @IBAction func orderConfirmedButton(sender: AnyObject) {
         for meatTopping in meatToppingsOnPizza {
+            for topping in meatTopping {
+                print("\(topping.name) : \(topping.amount)")
+            }
+        }
+        for meatTopping in veggieToppingsOnPizza {
+            for topping in meatTopping {
+                print("\(topping.name) : \(topping.amount)")
+            }
+        }
+        for meatTopping in sauceToppingsOnPizza {
+            for topping in meatTopping {
+                print("\(topping.name) : \(topping.amount)")
+            }
+        }
+
+        for meatTopping in cheeseToppingsOnPizza {
             for topping in meatTopping {
                 print("\(topping.name) : \(topping.amount)")
             }
         }
     }
 
-    @IBAction func toppingAmountChanged(segment: UISegmentedControl) {
+    @IBAction func toppingAmountSegmentedControlAction(segment: UISegmentedControl) {
         // Downcast twice (first downcast gave UITableViewContentCell
         let cell = segment.superview!.superview as! ToppingTableViewCell
         // The index of the ToppingTableViewCell in the TableView
@@ -57,20 +71,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Get the TableView from the cell (reference)
         let toppingTableView = cell.superview?.superview as! UITableView
         let toppingTableViewCellIndex = toppingTableView.indexPathForCell(cell)!.row
-
+        
         switch toppingTableView {
         case meatsTableView:
             print("MEATS")
-            meatToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            meatToppingsOnPizza[halfOrWholeSegmentedControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         case veggiesTableView:
             print("VEGGIE")
-            veggieToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            veggieToppingsOnPizza[halfOrWholeSegmentedControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         case saucesTableView:
             print("VEGGIE")
-            sauceToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            sauceToppingsOnPizza[halfOrWholeSegmentedControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         case cheesesTableView:
             print("VEGGIE")
-            cheeseToppingsOnPizza[sideOfPizzaSegmentControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
+            cheeseToppingsOnPizza[halfOrWholeSegmentedControl.selectedSegmentIndex][toppingTableViewCellIndex].amount = segment.selectedSegmentIndex
         default:
             print("No type")
         }
@@ -81,11 +95,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    @IBAction func sideForToppings(segment: UISegmentedControl) {
+    @IBAction func halfOfWholeSegmentedControlAction(segment: UISegmentedControl) {
         changeToppingAmountBasedOnSide(meatToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: meatsTableView)
         changeToppingAmountBasedOnSide(veggieToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: veggiesTableView)
         changeToppingAmountBasedOnSide(sauceToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: saucesTableView)
         changeToppingAmountBasedOnSide(cheeseToppingsOnPizza[segment.selectedSegmentIndex], toppingTableView: cheesesTableView)
+
     }
     
     func changeToppingAmountBasedOnSide(toppingAmountArray: Array<Topping>, toppingTableView: UITableView) {
@@ -93,7 +108,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let indexPath = NSIndexPath(forRow: index, inSection: 0)
             let cell = toppingTableView.cellForRowAtIndexPath(indexPath) as! ToppingTableViewCell
             let topping = toppingAmountArray[indexPath.row]
-            cell.toppingAmount.selectedSegmentIndex = topping.amount
+            cell.toppingAmountSegmentedControl.selectedSegmentIndex = topping.amount
         }
     }
     
@@ -111,18 +126,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.veggiesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
         self.saucesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
         self.cheesesTableView.registerClass((ToppingTableViewCell.self), forCellReuseIdentifier: "ToppingTableViewCell")
-        
-        // Link the table view to the view controller
-        meatsTableView.delegate = self
-        meatsTableView.dataSource = self
-        veggiesTableView.delegate = self
-        veggiesTableView.dataSource = self
-        
-        saucesTableView.delegate = self
-        saucesTableView.dataSource = self
-        
-        cheesesTableView.delegate = self
-        cheesesTableView.dataSource = self
 
     }
     
@@ -262,7 +265,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let topping = toppingTableView[indexPath.row]
         cell.toppingLabel.text = topping.name
         cell.toppingImage.image = topping.image
-        cell.toppingAmount.selectedSegmentIndex = topping.amount
+        cell.toppingAmountSegmentedControl.selectedSegmentIndex = topping.amount
 
         return cell
     }
